@@ -2,7 +2,7 @@
   "name": "redux",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "src/main.js",
   "dependencies": {
     "babel-core": "^6.2.1",
     "babel-loader": "^6.2.0",
@@ -15,6 +15,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
