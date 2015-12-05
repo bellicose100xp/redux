@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
+import {toggleTodoAction} from '../actionCreators/actionCreators'
 
 const Todo = ({completed, text, id, onTodoClick}) => (
     <li
@@ -38,10 +39,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onTodoClick: id => {
-            store.dispatch({
-                type: 'TOGGLE_TODO',
-                id: id
-            })
+            dispatch(toggleTodoAction(id))
         }
     }
 };
