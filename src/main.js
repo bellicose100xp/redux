@@ -1,10 +1,13 @@
+import * as promise from 'es6-promise';
+promise.polyfill();
+
 import React, {Component} from 'react';
 import {Provider} from 'react-redux';
 import ReactDOM from 'react-dom';
-import store from './store/store';
 import TodoApp from './compnents/todoApp';
 import expect from 'expect';
 import deepFreeze  from 'deep-freeze';
+import store from './store/store';
 
 ReactDOM.render(
     <Provider store={store}>

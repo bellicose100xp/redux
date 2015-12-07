@@ -3,10 +3,18 @@
  */
 import todos from '../reducers/todosReducer';
 import visibilityFilter from '../reducers/visibilityReducer'
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+const loggerMiddleware = createLogger();
+import {createStore, combineReducers, applyMiddleware } from 'redux';
 
-import {createStore, combineReducers} from 'redux';
+const rootReducer = combineReducers({todos, visibilityFilter});
 
-const todoApp = combineReducers({todos, visibilityFilter});
-const store = createStore(todoApp);
+const createStoreWithMiddleware = applyMiddleware(
+    thunkMiddleware,
+    loggerMiddleware
+)(createStore);
 
-export default store;
+const configureStore = initialState => createStoreWithMiddleware(rootReducer, initialState);
+
+export default configureStore();
