@@ -7,7 +7,7 @@ import {toggleTodoAction} from '../actionCreators/actionCreators'
 
 const Todo = ({completed, text, id, onTodoClick}) => (
     <li
-        onClick={onTodoClick.bind(null, id)}
+        onClick={onTodoClick.bind(null, id, completed)}
         style={{
                 textDecoration: completed ? 'line-through' : 'none'
                 }}
@@ -38,8 +38,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onTodoClick: id => {
-            dispatch(toggleTodoAction(id))
+        onTodoClick: (key, completed) => {
+            dispatch(toggleTodoAction(key, completed))
         }
     }
 };
@@ -48,8 +48,9 @@ const TodoList = ({visibleTodos, onTodoClick}) => (
     <ul>
         {visibleTodos.map(todo =>
             <Todo
-                key={todo.id}
+                key={todo.key}
                 onTodoClick={onTodoClick}
+                id={todo.key}
                 {...todo}
             />
         )}
