@@ -7,7 +7,9 @@ import {
     SET_VISIBILITY_FILTER,
     FIREBASE_URL,
     UPDATE_TODOS_FROM_SERVER,
-    FIREBASE_URL_NO_JSON
+    FIREBASE_URL_NO_JSON,
+    SET_BUSY_INDICATOR,
+    RESET_BUSY_INDICATOR
 } from '../constants/constants';
 import _ from 'lodash';
 import Firebase from 'firebase';
@@ -43,8 +45,11 @@ export const requestAllTodos = () => dispatch =>
             })
         });
 
-export const addTodoAction = text => dispatch =>
-    fetch(FIREBASE_URL, {
+export const addTodoAction = text => dispatch => {
+
+    dispatch({type:SET_BUSY_INDICATOR});
+
+    return fetch(FIREBASE_URL, {
         method: 'post',
         headers: {
             'Accept': 'application/json',
@@ -54,9 +59,16 @@ export const addTodoAction = text => dispatch =>
             text: text,
             completed: false
         })
-    }).catch(err => {
-            console.log('add request failed: ', err);
-        });
+    })
+        .then(res => res.json())
+        .then(data => {
+            dispatch({type: RESET_BUSY_INDICATOR});
+        })
+        .catch(err => {
+        dispatch({type: RESET_BUSY_INDICATOR});
+        console.log('add request failed: ', err);
+    });
+};
 
 
 export const filterClickAction = filter => {
@@ -66,12 +78,31 @@ export const filterClickAction = filter => {
     }
 };
 
-export const toggleTodoAction = (key, completed) => dispatch =>
+export const toggleTodoAction = (key, completed) => dispatch => {
+    dispatch({type:SET_BUSY_INDICATOR});
     fetch(`${FIREBASE_URL_NO_JSON}${key}.json`, {
         method: 'PATCH',
         body: JSON.stringify({
             completed: !completed
         })
-    }).catch(err => {
-            console.log('toggle request failed: ', err);
-        });
+    })
+        .then(res => res.json())
+        .then(data => {
+            dispatch({type: RESET_BUSY_INDICATOR});
+        })
+        .catch(err => {
+        console.log('toggle request failed: ', err);
+    });
+};
+
+export const setBusyAction = () => {
+    store.dispatch({
+        type: SET_BUSY_INDICATOR
+    })
+};
+
+export const resetBusyAction = () => {
+    store.dispatch({
+        type: RESET_BUSY_INDICATOR
+    })
+};
