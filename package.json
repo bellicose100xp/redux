@@ -29,7 +29,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "webpack-dev-server",
-    "deploy": "webpack && firebase deploy",
+    "deploy": "webpack -p && firebase deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
