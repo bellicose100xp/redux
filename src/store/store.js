@@ -4,12 +4,18 @@
 import todos from '../reducers/todosReducer';
 import visibilityFilter from '../reducers/visibilityReducer';
 import busyReducer from '../reducers/busyReducers';
+import validateReducer from '../reducers/validateReducer';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 const loggerMiddleware = createLogger();
 import {createStore, combineReducers, applyMiddleware } from 'redux';
 
-const rootReducer = combineReducers({todos, visibilityFilter, busyReducer});
+const rootReducer = combineReducers({
+    todos,
+    visibilityFilter,
+    busyReducer,
+    validateReducer
+});
 
 const createStoreWithMiddleware = applyMiddleware(
     thunkMiddleware,

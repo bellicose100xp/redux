@@ -3,30 +3,30 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {addTodoAction} from '../actionCreators/actionCreators';
+import {addTodoAction, validateInputAction} from '../actionCreators/actionCreators';
 
 let AddTodo = ({dispatch}) => {
     let input;
 
-    const addTodo = text => {
-        dispatch(addTodoAction(text));
-    };
-
     const handleSubmit = event => {
+        const text = input.value;
         event.preventDefault();
         if (!input.value) return;
-        addTodo(input.value);
+        dispatch(validateInputAction(text));
+        dispatch(addTodoAction(text));
         input.value = '';
     };
 
     return (
         <form>
             <input
+                className="form-control"
                 ref={node => {
                         input = node;
                     }}
             />
             <button
+                className="btn btn-primary"
                 type="submit"
                 onClick={handleSubmit}
             >
@@ -36,6 +36,6 @@ let AddTodo = ({dispatch}) => {
     )
 };
 
-AddTodo = connect()(AddTodo); // default behavior is no state, just inject dispatch as prop
+AddTodo = connect()(AddTodo); // default behavior is no state, just inject 'dispatch' as prop
 
 export default AddTodo;

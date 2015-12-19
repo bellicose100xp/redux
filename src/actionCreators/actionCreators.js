@@ -9,7 +9,8 @@ import {
     UPDATE_TODOS_FROM_SERVER,
     FIREBASE_URL_NO_JSON,
     SET_BUSY_INDICATOR,
-    RESET_BUSY_INDICATOR
+    RESET_BUSY_INDICATOR,
+    VALIDATE_INPUT
 } from '../constants/constants';
 import _ from 'lodash';
 import Firebase from 'firebase';
@@ -105,4 +106,11 @@ export const resetBusyAction = () => {
     store.dispatch({
         type: RESET_BUSY_INDICATOR
     })
+};
+
+export const validateInputAction = text => {
+    return {
+        type: VALIDATE_INPUT,
+        text
+    }
 };
