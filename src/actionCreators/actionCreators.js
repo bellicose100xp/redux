@@ -48,7 +48,7 @@ export const requestAllTodos = () => dispatch =>
 
 export const addTodoAction = text => dispatch => {
 
-    dispatch({type:SET_BUSY_INDICATOR});
+    dispatch({type: SET_BUSY_INDICATOR});
 
     return fetch(FIREBASE_URL, {
         method: 'post',
@@ -66,9 +66,9 @@ export const addTodoAction = text => dispatch => {
             dispatch({type: RESET_BUSY_INDICATOR});
         })
         .catch(err => {
-        dispatch({type: RESET_BUSY_INDICATOR});
-        console.log('add request failed: ', err);
-    });
+            dispatch({type: RESET_BUSY_INDICATOR});
+            console.log('add request failed: ', err);
+        });
 };
 
 
@@ -80,7 +80,7 @@ export const filterClickAction = filter => {
 };
 
 export const toggleTodoAction = (key, completed) => dispatch => {
-    dispatch({type:SET_BUSY_INDICATOR});
+    dispatch({type: SET_BUSY_INDICATOR});
     fetch(`${FIREBASE_URL_NO_JSON}${key}.json`, {
         method: 'PATCH',
         body: JSON.stringify({
@@ -92,8 +92,24 @@ export const toggleTodoAction = (key, completed) => dispatch => {
             dispatch({type: RESET_BUSY_INDICATOR});
         })
         .catch(err => {
-        console.log('toggle request failed: ', err);
-    });
+            dispatch({type: RESET_BUSY_INDICATOR});
+            console.log('toggle request failed: ', err);
+        });
+};
+
+export const deleteTodoAction = key => dispatch => {
+    dispatch({type: SET_BUSY_INDICATOR});
+    fetch(`${FIREBASE_URL_NO_JSON}${key}.json`, {
+        method: 'DELETE'
+    })
+        .then(res => res.json())
+        .then(data => {
+            dispatch({type: RESET_BUSY_INDICATOR});
+        })
+        .catch(err => {
+            dispatch({type: RESET_BUSY_INDICATOR});
+            console.log('toggle request failed: ', err);
+        });
 };
 
 export const setBusyAction = () => {
@@ -108,9 +124,10 @@ export const resetBusyAction = () => {
     })
 };
 
-export const validateInputAction = text => {
+export const validateInputAction = (validityStatus, errorText) => {
     return {
         type: VALIDATE_INPUT,
-        text
+        validityStatus,
+        errorText
     }
 };

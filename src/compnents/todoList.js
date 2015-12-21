@@ -3,17 +3,22 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {toggleTodoAction} from '../actionCreators/actionCreators'
+import {toggleTodoAction, deleteTodoAction} from '../actionCreators/actionCreators'
 
-const Todo = ({completed, text, id, onTodoClick}) => (
-    <li
-        onClick={onTodoClick.bind(null, id, completed)}
-        style={{
+const Todo = ({completed, text, id, onTodoClick, onDeleteClick}) => (
+    <tr>
+        <td
+            onClick={onTodoClick.bind(null, id, completed)}
+            style={{
                 textDecoration: completed ? 'line-through' : 'none'
                 }}
-    >
-        {text}
-    </li>
+        >
+            {text}
+        </td>
+        <td onClick={onDeleteClick.bind(null, id)}>
+            <span className="glyphicon glyphicon-remove-circle" />
+        </td>
+    </tr>
 );
 
 const mapStateToProps = state => {
@@ -40,21 +45,33 @@ const mapDispatchToProps = dispatch => {
     return {
         onTodoClick: (key, completed) => {
             dispatch(toggleTodoAction(key, completed))
+        },
+        onDeleteClick: key => {
+            dispatch(deleteTodoAction(key))
         }
     }
 };
 
-const TodoList = ({visibleTodos, onTodoClick}) => (
-    <ul>
-        {visibleTodos.map(todo =>
+const TodoList = ({visibleTodos, onTodoClick, onDeleteClick}) => (
+    <table className="table table-striped">
+        <thead>
+        <tr>
+            <th>Todos</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {visibleTodos.map(todo => (
             <Todo
                 key={todo.key}
                 onTodoClick={onTodoClick}
+                onDeleteClick={onDeleteClick}
                 id={todo.key}
                 {...todo}
             />
-        )}
-    </ul>
+        ))}
+        </tbody>
+    </table>
 );
 
 const VisibleTodoList = connect(

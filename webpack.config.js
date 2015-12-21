@@ -1,3 +1,5 @@
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
     entry: './src/main.js',
     output: {
@@ -9,6 +11,9 @@ module.exports = {
         inline: true,
         contentBase: './dist'
     },
+    plugins: [
+        new ExtractTextPlugin("styles.css")
+    ],
     module: {
         loaders: [
             {
@@ -22,8 +27,15 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: "style-loader!css-loader"
+            //   loader: "style!css"
+                loader: ExtractTextPlugin.extract("style", "css")
+            },
+            {
+                test: /\.sass$/,
+                exclude: /(node_modules|bower_components)/,
+               // loader: "style!css!sass?indentedSyntax"
+                loader: ExtractTextPlugin.extract("style", "css!sass?indentedSyntax")
             }
         ]
     }
-}
+};

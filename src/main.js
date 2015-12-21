@@ -1,7 +1,7 @@
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 
-import './css/app.css'
+import './css/app.sass'
 
 import React, {Component} from 'react'
 import {Provider} from 'react-redux'

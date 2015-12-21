@@ -4,17 +4,14 @@
 import {VALIDATE_INPUT} from '../constants/constants'
 
 export default (state = {
-    valid: true,
+    valid: false,
     error: ''
 }, action) => {
     switch (action.type) {
         case VALIDATE_INPUT:
-            return action.text.length < 2 ? Object.assign({}, state, {
-                valid:false,
-                error: 'Todo must be more than 2 characters'
-            }) : Object.assign({}, state, {
-                valid: true,
-                error: ''
+            return Object.assign({}, state, {
+                valid: action.validityStatus,
+                error: action.errorText
             });
         default:
             return state;
