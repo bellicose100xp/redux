@@ -2,6 +2,7 @@
  * Created by admin on 12/3/2015.
  */
 import React from 'react'
+import { Component as RxComponent, FuncSubject } from 'rx-react';
 import {connect} from 'react-redux'
 import {addTodoAction, validateInputAction} from '../actionCreators/actionCreators'
 import Rx from 'rx'
@@ -25,28 +26,36 @@ const validateInputUtil = (text, dispatch) => {
 };
 
 
-class AddTodo extends React.Component {
+class AddTodo extends RxComponent {
     constructor() {
         super()
     }
 
-    componentDidMount = () => {
-        const todoInput = document.querySelector('#todoInput');
+    componentWillMount = () => {
+        this.inputChanged = FuncSubject.create(event => event.target.value);
 
-        Rx.Observable.fromEvent(todoInput, 'keyup')
-            .pluck('target', 'value')
+        let stream = this.inputChanged
             .debounce(500)
-            .distinctUntilChanged()
-            .subscribe(data => {
-                validateInputUtil(data, this.props.dispatch)
-            }, err => {
-                console.log(err);
-            });
+            .distinctUntilChanged();
+
+        stream.subscribe(data => {
+            validateInputUtil(data, this.props.dispatch)
+        }, err => {
+            console.log(err);
+        });
+
+        let clearValidation = stream.delay(3000);
+        clearValidation.subscribe(() => {
+            if (!this.props.valid) {
+                this.props.dispatch(validateInputAction(true, ''))
+            }
+        });
+
     };
 
     render() {
         let input;
-        const {valid, error, dispatch} = this.props;
+        let {valid, error, dispatch} = this.props;
 
         const handleSubmit = event => {
             const text = input.value;
@@ -57,18 +66,13 @@ class AddTodo extends React.Component {
             input.value = '';
         };
 
-        //const handleOnChange = event => {
-        //    const text = event.target.value;
-        //    validateInputUtil(text);
-        //};
-
         return (
             <form>
                 <div className="form-group">
                     <input
                         id="todoInput"
                         className="form-control"
-                     //   onChange={handleOnChange}
+                        onChange={this.inputChanged}
                         ref={node => {
                         input = node;
                     }}
