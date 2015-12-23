@@ -1,14 +1,14 @@
 /**
  * Created by HSO on 12/19/15.
  */
-import {VALIDATE_INPUT} from '../constants/constants'
+import {INVALID_INPUT} from '../constants/constants'
 
 export default (state = {
     valid: false,
     error: ''
 }, action) => {
     switch (action.type) {
-        case VALIDATE_INPUT:
+        case INVALID_INPUT:
             return Object.assign({}, state, {
                 valid: action.validityStatus,
                 error: action.errorText

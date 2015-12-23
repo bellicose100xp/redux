@@ -10,7 +10,7 @@ import {
     FIREBASE_URL_NO_JSON,
     SET_BUSY_INDICATOR,
     RESET_BUSY_INDICATOR,
-    VALIDATE_INPUT
+    INVALID_INPUT
 } from '../constants/constants';
 import _ from 'lodash';
 import Firebase from 'firebase';
@@ -126,7 +126,7 @@ export const resetBusyAction = () => {
 
 export const validateInputAction = (validityStatus, errorText) => {
     return {
-        type: VALIDATE_INPUT,
+        type: INVALID_INPUT,
         validityStatus,
         errorText
     }
